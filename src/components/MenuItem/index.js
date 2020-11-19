@@ -5,7 +5,7 @@ import {
     LinkIcon
 } from './styled';
 
-export default ({icon, link}) => {
+export default ({title, icon, link}) => {
     const history = useHistory();
     const location = useLocation();
 
@@ -16,7 +16,7 @@ export default ({icon, link}) => {
         history.push(link);
     }
     return(
-        <LinkArea active={isActive} href={link} onClick={handleLinkClick}>
+        <LinkArea data-tip={title} data-for="tip-right" active={isActive} href={link} onClick={handleLinkClick}>
             <LinkIcon src={icon} />
         </LinkArea>
     );

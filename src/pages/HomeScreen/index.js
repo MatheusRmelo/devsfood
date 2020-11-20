@@ -6,8 +6,11 @@ import { Container, CategoryArea, CategoryList, ProductArea, ProductList,Product
 import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
+import Modal from '../../components/Modal';
 
 import api from '../../api';
+
+let searchTime = null;
 
 export default () => {
     const history = useHistory();
@@ -16,17 +19,27 @@ export default () => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
+    const [modalStatus, setModalStatus] = useState(true);
+
     const [activeCategory, setActiveCategory] = useState(0);
-    const [activePage, setActivePage] = useState(0);
+    const [activePage, setActivePage] = useState(1);
+    const [activeSearch, setActiveSearch] = useState('');
 
     const getProducts = async () => {
-        const prods = await api.getProducts();
+        const prods = await api.getProducts(activeCategory, activePage, activeSearch);
         if(prods.error === ''){
             setProducts(prods.result.data); 
             setTotalPages(prods.result.pages);
             setActivePage(prods.result.page);  
         }
     }
+
+    useEffect(()=>{
+        clearTimeout(searchTime);
+        searchTime = setTimeout(()=>{
+            setActiveSearch(headerSearch);
+        },2000);
+    },[headerSearch]);
 
     useEffect(()=>{
         const getCategories = async () => {
@@ -44,7 +57,7 @@ export default () => {
     useEffect(()=>{
         setProducts([]);
         getProducts();
-    }, [activeCategory, activePage]);
+    }, [activeCategory, activePage, activeSearch]);
 
     return (
         <Container>
@@ -78,7 +91,7 @@ export default () => {
                 totalPages > 0 &&
                 <ProductPaginationArea>
                     {
-                        Array(8).fill(0).map((item, index)=>(
+                        Array(totalPages).fill(0).map((item, index)=>(
                             <ProductPaginationItem 
                                 key={index} 
                                 active={activePage}
@@ -92,6 +105,13 @@ export default () => {
                 </ProductPaginationArea>
             }
             
+            <Modal visible={modalStatus} setVisible={setModalStatus} >
+                Contéudo do modal
+                <div style={{backgroundColor:'red', width:600, height:400}}>
+
+                </div>
+                Fim do contéudo
+            </Modal>
         </Container>
     );
 }

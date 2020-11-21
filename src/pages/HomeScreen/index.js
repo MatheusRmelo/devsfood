@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ProductItem from '../../components/ProductItem';
 import Modal from '../../components/Modal';
+import ModalProduct from '../../components/ModalProduct';
 
 import api from '../../api';
 
@@ -19,7 +20,8 @@ export default () => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    const [modalStatus, setModalStatus] = useState(true);
+    const [modalStatus, setModalStatus] = useState(false);
+    const [modalData, setModalData] = useState({});
 
     const [activeCategory, setActiveCategory] = useState(0);
     const [activePage, setActivePage] = useState(1);
@@ -59,6 +61,11 @@ export default () => {
         getProducts();
     }, [activeCategory, activePage, activeSearch]);
 
+    const handleProductClick = (data) =>{
+        setModalData(data);
+        setModalStatus(true);
+    }
+
     return (
         <Container>
             <Header search={headerSearch} onSearch={setHeaderSearch}/>
@@ -82,6 +89,7 @@ export default () => {
                             <ProductItem 
                                 key={index}
                                 data={item}
+                                onClick={handleProductClick}
                             />
                         ))}
                     </ProductList>
@@ -106,11 +114,7 @@ export default () => {
             }
             
             <Modal visible={modalStatus} setVisible={setModalStatus} >
-                Contéudo do modal
-                <div style={{backgroundColor:'red', width:600, height:400}}>
-
-                </div>
-                Fim do contéudo
+                <ModalProduct data={modalData} setVisible={setModalStatus} />
             </Modal>
         </Container>
     );

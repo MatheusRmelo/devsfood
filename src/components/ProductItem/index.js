@@ -11,9 +11,12 @@ import {
     ProductButton
  } from './styled';
 
-export default ({data}) => {
+export default ({data, onClick}) => {
+
+
+
     return(
-        <Container>
+        <Container onClick={()=>onClick(data)}>
             <ProductPhotoArea>
                 <ProductPhoto src={data.image} />
             </ProductPhotoArea>

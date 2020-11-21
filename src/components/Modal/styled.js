@@ -14,10 +14,10 @@ export const Container = styled.div`
     transition: all ease 0.3s;
 `;
 export const ModalBody = styled.div`
-    max-height:95vh;
-    max-width:100vw;
     background-color:white;
     border-radius:20px;
     box-shadow: 0px 0px 50px black;
+    max-width:100vw;
+    max-height:95vh;
     overflow:auto;
 `;
